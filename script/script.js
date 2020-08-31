@@ -21,15 +21,26 @@ window.addEventListener('DOMContentLoaded', () => {
       };
     }
 
-    function updateClock() {
-      let timer = getTimeRemaining();
+    let checkAndCreateTwoDigit = (num) => {
+      return String(num).length === 1 ? ('0' + num) : num; // если число из 1 символа конкатинируем в начале 0
+    };
 
-      timerHours.textContent = timer.hours;
-      timerMinutes.textContent = timer.minutes;
-      timerSeconds.textContent = timer.seconds;
-      if (timer.timeRemaining > 0) {
-        setTimeout(updateClock, 1000);
-      }
+    function updateClock() {
+      let idInterval = setInterval(() => {
+        let timer = getTimeRemaining();
+
+        timerHours.textContent = checkAndCreateTwoDigit(timer.hours);
+        timerMinutes.textContent = checkAndCreateTwoDigit(timer.minutes);
+        timerSeconds.textContent = checkAndCreateTwoDigit(timer.seconds);
+        if (timer.timeRemaining <= 0) {
+          clearInterval(idInterval);
+          timerHours.textContent = '00';
+          timerMinutes.textContent = '00';
+          timerSeconds.textContent = '00';
+        }
+
+      }, 1000);
+
 
     }
 
@@ -37,5 +48,5 @@ window.addEventListener('DOMContentLoaded', () => {
 
   }
 
-  countTimer('10 september 2020');
+  countTimer('31 august 2020 22:00:00');
 });
