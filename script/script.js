@@ -54,40 +54,27 @@ window.addEventListener('DOMContentLoaded', () => {
     // menuItems = menu.querySelectorAll('ul>li');
 
     const handlerMenu = () => {
-      // console.log(btnMenu);
       menu.classList.toggle('active-menu');
     };
 
     body.addEventListener('click', (event) => {
       let target = event.target;
-      // target = target.parentNode;
-      // console.log(target);
-      if (
-        target.parentNode === btnMenu ||
-        target === closeBtn ||
-        target.parentNode === menu
-      ) {
+
+      if (target.parentNode === btnMenu || target === closeBtn) {
         handlerMenu();
       } else {
-        console.log(target);
-      }
+        target = target.closest('.active-menu');
 
-      // if (
-      //   target.parentNode.contains('menu') ||
-      //   target.parentNode.contains('.menu')
-      // ) {
-      //   handlerMenu();
-      // }
-      // } else {
-      //   target = target.closest('.active-menu');
-      //   if (
-      //     target.closest('.active-menu') ||
-      //     target.closest('menu') ||
-      //     target.closest('.menu')
-      //   ) {
-      //     handlerMenu();
-      //   }
-      // }
+        if (target) {
+          handlerMenu();
+        } else {
+          target = event.target;
+          // console.log(body.children[1].classList.contains('active-menu'));
+          if (body.children[1].classList.contains('active-menu')) {
+            handlerMenu();
+          }
+        }
+      }
     });
     // btnMenu.addEventListener('click', handlerMenu);
     // closeBtn.addEventListener('click', handlerMenu);
