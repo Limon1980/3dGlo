@@ -69,8 +69,15 @@ window.addEventListener('DOMContentLoaded', () => {
           handlerMenu();
         } else {
           target = event.target;
+
+          const findActiveMenu = (elem) => {
+            return elem.classList.contains('active-menu');
+          };
+
+          let arr = Array.from(body.children);
+
           // console.log(body.children[1].classList.contains('active-menu'));
-          if (body.children[1].classList.contains('active-menu')) {
+          if (arr.find(findActiveMenu)) {
             handlerMenu();
           }
         }
