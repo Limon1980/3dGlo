@@ -48,27 +48,48 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const toggleMenu = () => {
     const btnMenu = document.querySelector('.menu'),
-      menu = document.querySelector('menu');
-    // closeBtn = document.querySelector('.close-btn'),
+      menu = document.querySelector('menu'),
+      body = document.querySelector('body'),
+      closeBtn = document.querySelector('.close-btn');
     // menuItems = menu.querySelectorAll('ul>li');
 
     const handlerMenu = () => {
+      // console.log(btnMenu);
       menu.classList.toggle('active-menu');
     };
 
-    menu.addEventListener('click', (event) => {
+    body.addEventListener('click', (event) => {
       let target = event.target;
-
-      if (target.classList.contains('close-btn')) {
+      // target = target.parentNode;
+      // console.log(target);
+      if (
+        target.parentNode === btnMenu ||
+        target === closeBtn ||
+        target.parentNode === menu
+      ) {
         handlerMenu();
       } else {
-        target = target.closest('.active-menu');
-        if (target) {
-          handlerMenu();
-        }
+        console.log(target);
       }
+
+      // if (
+      //   target.parentNode.contains('menu') ||
+      //   target.parentNode.contains('.menu')
+      // ) {
+      //   handlerMenu();
+      // }
+      // } else {
+      //   target = target.closest('.active-menu');
+      //   if (
+      //     target.closest('.active-menu') ||
+      //     target.closest('menu') ||
+      //     target.closest('.menu')
+      //   ) {
+      //     handlerMenu();
+      //   }
+      // }
     });
-    btnMenu.addEventListener('click', handlerMenu);
+    // btnMenu.addEventListener('click', handlerMenu);
     // closeBtn.addEventListener('click', handlerMenu);
     // menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
   };
