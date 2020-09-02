@@ -48,16 +48,29 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const toggleMenu = () => {
     const btnMenu = document.querySelector('.menu'),
-      menu = document.querySelector('menu'),
-      closeBtn = document.querySelector('.close-btn'),
-      menuItems = menu.querySelectorAll('ul>li');
+      menu = document.querySelector('menu');
+    // closeBtn = document.querySelector('.close-btn'),
+    // menuItems = menu.querySelectorAll('ul>li');
 
     const handlerMenu = () => {
       menu.classList.toggle('active-menu');
     };
+
+    menu.addEventListener('click', (event) => {
+      let target = event.target;
+
+      if (target.classList.contains('close-btn')) {
+        handlerMenu();
+      } else {
+        target = target.closest('.active-menu');
+        if (target) {
+          handlerMenu();
+        }
+      }
+    });
     btnMenu.addEventListener('click', handlerMenu);
-    closeBtn.addEventListener('click', handlerMenu);
-    menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
+    // closeBtn.addEventListener('click', handlerMenu);
+    // menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
   };
 
   toggleMenu();
@@ -66,8 +79,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const togglePopUp = () => {
     const popup = document.querySelector('.popup'),
-      popupBtn = document.querySelectorAll('.popup-btn'),
-      pupUpClose = document.querySelector('.popup-close');
+      popupBtn = document.querySelectorAll('.popup-btn');
 
     popupBtn.forEach((elem) => {
       elem.addEventListener('click', () => {
@@ -89,8 +101,17 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    pupUpClose.addEventListener('click', () => {
-      popup.style.display = 'none';
+    popup.addEventListener('click', (event) => {
+      let target = event.target;
+
+      if (target.classList.contains('popup-close')) {
+        popup.style.display = 'none';
+      } else {
+        target = target.closest('.popup-content');
+        if (!target) {
+          popup.style.display = 'none';
+        }
+      }
     });
   };
 
@@ -115,17 +136,14 @@ window.addEventListener('DOMContentLoaded', () => {
     };
     tabHeader.addEventListener('click', (event) => {
       let target = event.target;
-      while (target !== tabHeader) {
-        console.log(target);
-        if (target.classList.contains('service-header-tab')) {
-          tab.forEach((item, i) => {
-            if (item === target) {
-              toggleTabContent(i);
-            }
-          });
-          return;
-        }
-        target = target.parentNode;
+      target = target.closest('.service-header-tab');
+
+      if (target) {
+        tab.forEach((item, i) => {
+          if (item === target) {
+            toggleTabContent(i);
+          }
+        });
       }
     });
   };
