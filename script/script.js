@@ -170,8 +170,26 @@ window.addEventListener('DOMContentLoaded', () => {
   const slider = () => {
     const slide = document.querySelectorAll('.portfolio-item'),
       btn = document.querySelectorAll('.portfolio-btn'),
-      dot = document.querySelectorAll('.dot'),
-      slider = document.querySelector('.portfolio-content');
+      slider = document.querySelector('.portfolio-content'),
+      portfolioDots = document.querySelector('.portfolio-dots');
+
+    console.log(portfolioDots);
+    console.log(slide.length);
+
+    // добавим блоки li равные колличесву слайдов на странице
+    for (let i = 0; i < slide.length; i++) {
+      if (i === 0) {
+        portfolioDots.insertAdjacentHTML(
+          'beforeend',
+          `<li class="dot dot-active"></li>`
+        );
+        continue;
+      }
+
+      portfolioDots.insertAdjacentHTML('beforeend', `<li class="dot"></li>`);
+    }
+
+    const dot = document.querySelectorAll('.dot');
 
     let currentSlide = 0;
     let interval;
