@@ -60,7 +60,7 @@ window.addEventListener('DOMContentLoaded', () => {
     body.addEventListener('click', (event) => {
       let target = event.target;
 
-      if (target.parentNode === btnMenu || target === closeBtn) {
+      if (target.parentNode === btnMenu ) {
         handlerMenu();
       } else {
         target = target.closest('.active-menu');
@@ -274,4 +274,40 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   slider();
+
+  // data атрибуты
+
+  const team = () => {
+  const command = document.querySelectorAll('.command__photo');
+
+  command.forEach((elem) => {
+    elem.addEventListener('mouseenter', (event) => {
+    event.target.src = event.target.dataset.img;
+    });
+
+    elem.addEventListener('mouseleave', (event) => {
+
+      event.target.src = event.target.dataset.img.replace(/a(?=.jpg)/, '');
+      
+    });
+
+  });
+};
+
+team();
+
+ // валидация калькулятора
+ const calcValidate = () => {
+  const calcBlock = document.querySelector('.calc-block');
+
+  calcBlock.addEventListener('input', (e) => {
+    if (e.target.matches('.calc-square') ||
+      e.target.matches('.calc-count') ||
+      e.target.matches('.calc-day')) {
+      e.target.value = e.target.value.replace(/\D/g, '');
+    }
+  });
+};
+calcValidate();
+
 });
