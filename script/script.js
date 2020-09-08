@@ -343,18 +343,34 @@ const calc = (price = 100) => {
           total = price * typeValue * squareValue * countValue * dayValue;
         }
 
-        let iter = 0;
-        const cycleDigit = () =>{
+        // let iter = 0;
+        // const cycleDigit = () =>{
   
-          totalValue.innerText = iter;
-          if (iter < total){
-            setTimeout(cycleDigit, 10);
-            iter = iter + Math.ceil(total/100);
-          }
-        };
+        //   totalValue.innerText = iter;
+        //   if (iter < total){
+        //     setTimeout(cycleDigit, 10);
+        //     iter = iter + Math.ceil(total/100);
+        //   }
+        // };
+
+        function cycleDigit() {
+          let counter = 0;
+            return function count() {
+              
+              if (counter <= total){
+                totalValue.innerText = counter;
+                setTimeout(count, 10);
+                counter = counter + Math.ceil(total/100);
+              }
+               return counter;
+            };
+        }
+        
+        let cicle = cycleDigit();
+    
 
         if (total > 0){
-          cycleDigit();
+          cicle();
          
         } else {
           totalValue.textContent = 0;
@@ -383,3 +399,4 @@ const calc = (price = 100) => {
 
 calc(100);
 });
+
