@@ -320,6 +320,8 @@ const calc = (price = 100) => {
       calcCount = document.querySelector('.calc-count'),
       totalValue = document.getElementById('total');
 
+    
+
       const countSum = () => {
         let total = 0,
             countValue = 1,
@@ -340,8 +342,24 @@ const calc = (price = 100) => {
         if(typeValue && squareValue){
           total = price * typeValue * squareValue * countValue * dayValue;
         }
-        
-        totalValue.textContent = total;
+
+        let iter = 0;
+        const cycleDigit = () =>{
+  
+          totalValue.innerText = iter;
+          if (iter < total){
+            setTimeout(cycleDigit, 10);
+            iter = iter + Math.ceil(total/100);
+          }
+        };
+
+        if (total > 0){
+          cycleDigit();
+         
+        } else {
+          totalValue.textContent = 0;
+        }
+       
       };
 
      
