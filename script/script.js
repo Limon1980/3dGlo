@@ -340,7 +340,7 @@ const calc = (price = 100) => {
               }
                
         if(typeValue && squareValue){
-          total = price * typeValue * squareValue * countValue * dayValue;
+          total = Math.ceil(price * typeValue * squareValue * countValue * dayValue);
         }
 
         // let iter = 0;
@@ -358,10 +358,16 @@ const calc = (price = 100) => {
             return function count() {
               
               if (counter <= total){
-                totalValue.innerText = counter;
-                setTimeout(count, 10);
-                counter = counter + Math.ceil(total/100);
+                setTimeout(count, 1);
+                // counter = counter + Math.ceil(total/10);
               }
+
+               if (counter >= total){
+                totalValue.innerText = total;
+              } else if(counter % 10 === 0){
+                totalValue.innerText = counter;
+              }
+                counter = counter + 10;
                return counter;
             };
         }
@@ -371,11 +377,11 @@ const calc = (price = 100) => {
 
         if (total > 0){
           cicle();
-         
+          console.log(total);
         } else {
           totalValue.textContent = 0;
         }
-       
+        
       };
 
      
