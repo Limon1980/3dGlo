@@ -357,17 +357,13 @@ const calc = (price = 100) => {
           let counter = 0;
             return function count() {
               
-              if (counter <= total){
-                setTimeout(count, 1);
-                // counter = counter + Math.ceil(total/10);
-              }
-
                if (counter >= total){
                 totalValue.innerText = total;
-              } else if(counter % 10 === 0){
+              } else if(counter % 100 === 0){
                 totalValue.innerText = counter;
+                setTimeout(count, 10);
               }
-                counter = counter + 10;
+                counter = counter + 100;
                return counter;
             };
         }
