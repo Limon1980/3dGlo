@@ -44,7 +44,7 @@ window.addEventListener('DOMContentLoaded', () => {
     updateClock();
   }
 
-  countTimer('10 september 2020 22:00:00');
+  countTimer('23 september 2020 22:00:00');
 
   const toggleMenu = () => {
     const btnMenu = document.querySelector('.menu'),
@@ -396,52 +396,104 @@ window.addEventListener('DOMContentLoaded', () => {
   calc(100);
 
   // send-ajax-form
-
-  const sendForm = () => {
-    const errorMessage = 'Что то пошло не так',
-      loadMessage = 'Загрузка',
-      successMessage = 'Спасибо! Мы скоро с вами свяжемся';
-
-    const form = document.getElementById('form1');
+  const sendForm = (form) => {
+    const erorMessage = 'Что-то пошло не так...',
+      laodMessage = 'Загрузка...',
+      successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size: 2rem;';
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      form.appendChild(statusMessage);
+    statusMessage.style.cssText = 'color: red';
 
-      const request = new XMLHttpRequest();
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
 
-      request.addEventListener('readystatechange', () => {
-        statusMessage.textContent = loadMessage;
-
-        if (request.readyState !== 4) {
-          return;
-        }
-
-        if (request.status === 200) {
-          statusMessage.textContent = successMessage;
-        } else {
-          statusMessage.textContent = errorMessage;
-        }
-      });
-
-      request.open('POST', './server.php');
-      request.setRequestHeader('Content-Type', 'aplication/json');
       const formData = new FormData(form);
       let body = {};
 
-      // for (let val of formData.entries()) {
-      //   body[val[0]] = val[1];
-      // }
+      for (let val of formData.entries()) {
+        body[val[0]] = val[1];
+      }
 
-      formData.forEach((val, key) => {
-        body[key] = val;
+      let elementsForm = [...form.elements].filter(e => e.type.toLowerCase() !== 'button' && e.type !== 'submit');
+
+      let valid = false;
+
+      elementsForm.forEach(e => {
+        console.log(e);
+        if (e.classList.contains('error-input')) {
+          console.log('error');
+          valid = false;
+          return;
+        }
+        valid = true;
       });
-      console.log(body);
+      console.log('valid: ', valid);
+
+      if (valid) {
+        form.appendChild(statusMessage);
+        statusMessage.textContent = laodMessage;
+
+        postData(body, () => {
+          statusMessage.textContent = successMessage;
+          clearForm();
+        }, (error) => {
+          statusMessage.textContent = erorMessage;
+          console.log('error: ', error);
+        });
+      } else {
+        return;
+      }
+    });
+
+    const postData = (body, outputData, errorData) => {
+      const request = new XMLHttpRequest();
+
+      request.addEventListener('readystatechange', () => {
+        if (request.readyState !== 4) {
+          return;
+        }
+        request.status === 200 ? outputData() : errorData(request.status);
+      });
+
+      request.open('POST', 'server.php');
+      //request.setRequestHeader('Content-Type', 'multipart/form-data');
+      request.setRequestHeader('Content-Type', 'application/json');
+
+
       request.send(JSON.stringify(body));
+      //request.send(formData);
+    };
+
+    const clearForm = () => {
+      for (const el of form.elements) {
+        if (el.tagName.toLowerCase() !== 'button' && el.type !== 'button') {
+          el.value = '';
+        }
+      }
+    };
+
+  };
+  sendForm(document.getElementById('form1'));
+  sendForm(document.getElementById('form2'));
+  sendForm(document.getElementById('form3'));
+
+  // валидация формы
+  const validForm = (selector) => {
+    const form = document.querySelector(selector);
+
+    maskPhone(`${selector}-phone`);
+
+    form.addEventListener('input', e => {
+      if (e.target.id === `${selector.slice(1)}-name` || e.target.id === 'form2-message') {
+        console.log(e.target.value);
+        if (!(/^[А-Яа-яёЁ\s]*$/g.test(e.target.value))) {
+          e.target.value = e.target.value.slice(0, -1);
+        }
+      }
     });
   };
-
-  sendForm();
+  validForm('#form1');
+  validForm('#form2');
+  validForm('#form3');
 });
