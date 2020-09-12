@@ -401,9 +401,39 @@ window.addEventListener('DOMContentLoaded', () => {
       laodMessage = 'Загрузка...',
       successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
+
+
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size: 2rem;';
     statusMessage.style.cssText = 'color: red';
+
+
+    const postData = (body, outputData, errorData) => {
+      const request = new XMLHttpRequest();
+
+      request.addEventListener('readystatechange', () => {
+        if (request.readyState !== 4) {
+          return;
+        }
+        request.status === 200 ? outputData() : errorData(request.status);
+      });
+
+      request.open('POST', 'server.php');
+      //request.setRequestHeader('Content-Type', 'multipart/form-data');
+      request.setRequestHeader('Content-Type', 'application/json');
+
+
+      request.send(JSON.stringify(body));
+      //request.send(formData);
+    };
+
+    const clearForm = () => {
+      for (const el of form.elements) {
+        if (el.tagName.toLowerCase() !== 'button' && el.type !== 'button') {
+          el.value = '';
+        }
+      }
+    };
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -446,32 +476,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    const postData = (body, outputData, errorData) => {
-      const request = new XMLHttpRequest();
 
-      request.addEventListener('readystatechange', () => {
-        if (request.readyState !== 4) {
-          return;
-        }
-        request.status === 200 ? outputData() : errorData(request.status);
-      });
-
-      request.open('POST', 'server.php');
-      //request.setRequestHeader('Content-Type', 'multipart/form-data');
-      request.setRequestHeader('Content-Type', 'application/json');
-
-
-      request.send(JSON.stringify(body));
-      //request.send(formData);
-    };
-
-    const clearForm = () => {
-      for (const el of form.elements) {
-        if (el.tagName.toLowerCase() !== 'button' && el.type !== 'button') {
-          el.value = '';
-        }
-      }
-    };
 
   };
   sendForm(document.getElementById('form1'));
