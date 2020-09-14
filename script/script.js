@@ -399,39 +399,8 @@ window.addEventListener('DOMContentLoaded', () => {
 			laodMessage = 'Загрузка...',
 			successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
-
-
 		const statusMessage = document.createElement('div');
-		statusMessage.style.cssText = 'font-size: 2rem;';
-		statusMessage.style.cssText = 'color: red';
-
-
-		const postData = (body, outputData, errorData) => {
-			const request = new XMLHttpRequest();
-
-			request.addEventListener('readystatechange', () => {
-				if (request.readyState !== 4) {
-					return;
-				}
-				request.status === 200 ? outputData() : errorData(request.status);
-			});
-
-			request.open('POST', 'server.php');
-			//request.setRequestHeader('Content-Type', 'multipart/form-data');
-			request.setRequestHeader('Content-Type', 'application/json');
-
-
-			request.send(JSON.stringify(body));
-			//request.send(formData);
-		};
-
-		const clearForm = () => {
-			for (const el of form.elements) {
-				if (el.tagName.toLowerCase() !== 'button' && el.type !== 'button') {
-					el.value = '';
-				}
-			}
-		};
+		statusMessage.style.cssText = 'font-size: 2rem; color: red;';
 
 		form.addEventListener('submit', e => {
 			e.preventDefault();
@@ -449,7 +418,6 @@ window.addEventListener('DOMContentLoaded', () => {
 			let valid = false;
 
 			elementsForm.forEach(e => {
-				console.log(e);
 				if (e.classList.contains('error-input')) {
 					console.log('error');
 					valid = false;
@@ -457,26 +425,47 @@ window.addEventListener('DOMContentLoaded', () => {
 				}
 				valid = true;
 			});
-			console.log('valid: ', valid);
+
+			const postData = body => new Promise((resolve, reject) => {
+
+				const request = new XMLHttpRequest();
+
+				request.addEventListener('readystatechange', () => {
+					if (request.readyState !== 4) {
+						return;
+					}
+					request.status === 200 ? resolve() : reject(request.statusText);
+				});
+
+				request.open('POST', 'server.php');
+				request.setRequestHeader('Content-Type', 'application/json');
+
+				request.send(JSON.stringify(body));
+			});
+
+			const clearForm = () => {
+				for (const el of form.elements) {
+					if (el.tagName.toLowerCase() !== 'button' && el.type !== 'button') {
+						el.value = '';
+					}
+				}
+			};
 
 			if (valid) {
 				form.appendChild(statusMessage);
 				statusMessage.textContent = laodMessage;
 
-				postData(body, () => {
-					statusMessage.textContent = successMessage;
-					clearForm();
-				}, error => {
-					statusMessage.textContent = erorMessage;
-					console.log('error: ', error);
-				});
-			} else {
-				return;
+				postData(body)
+					.then(() => {
+						statusMessage.textContent = successMessage;
+						clearForm();
+					})
+					.catch(error => {
+						statusMessage.textContent = erorMessage;
+						console.error(error);
+					});
 			}
 		});
-
-
-
 	};
 	sendForm(document.getElementById('form1'));
 	sendForm(document.getElementById('form2'));
@@ -490,7 +479,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
 		form.addEventListener('input', e => {
 			if (e.target.id === `${selector.slice(1)}-name` || e.target.id === 'form2-message') {
-				console.log(e.target.value);
 				if (!(/^[А-Яа-яёЁ\s]*$/g.test(e.target.value))) {
 					e.target.value = e.target.value.slice(0, -1);
 				}
