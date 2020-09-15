@@ -29,18 +29,17 @@ function maskPhone(selector, masked = '+7 (___) ___-__-__') {
 			this.value = newValue;
 		}
 		if (event.type === "blur" && this.value.length < 5) {
-			// console.log(event.target.classList.add('error-input'));
+			event.target.classList.add('error-input');
 			this.value = "";
 			event.target.style.border = '2px solid red';
 		}
 		if (event.type === "blur" && this.value.length !== 18) {
-			// console.log(event.target.classList.add('error-input'));
+			event.target.classList.add('error-input');
 			event.target.style.border = '2px solid red';
 		}
 		if (event.type === "input" && this.value.length === 18) {
-			// console.log(event.target.classList.remove('error-input'));
 			event.target.style.border = '2px solid green';
-
+			event.target.classList.remove('error-input');
 		}
 	}
 

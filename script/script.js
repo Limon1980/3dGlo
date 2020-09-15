@@ -406,11 +406,12 @@ window.addEventListener('DOMContentLoaded', () => {
 			e.preventDefault();
 
 			const formData = new FormData(form);
-			const body = {};
+			// const body = {};
 
-			for (const val of formData.entries()) {
-				body[val[0]] = val[1];
-			}
+			// for (const val of formData.entries()) {
+			// 	body[val[0]] = val[1];
+			// }
+			// console.log(body);
 
 			const elementsForm = [...form.elements]
 				.filter(e => e.type.toLowerCase() !== 'button' && e.type !== 'submit');
@@ -426,23 +427,13 @@ window.addEventListener('DOMContentLoaded', () => {
 				valid = true;
 			});
 
-			const postData = body => new Promise((resolve, reject) => {
-
-				const request = new XMLHttpRequest();
-
-				request.addEventListener('readystatechange', () => {
-					if (request.readyState !== 4) {
-						return;
-					}
-					request.status === 200 ? resolve() : reject(request.statusText);
-				});
-
-				request.open('POST', 'server.php');
-				request.setRequestHeader('Content-Type', 'application/json');
-
-				request.send(JSON.stringify(body));
+			const postData = body => fetch('server.php', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body
 			});
-
 			const clearForm = () => {
 				for (const el of form.elements) {
 					if (el.tagName.toLowerCase() !== 'button' && el.type !== 'button') {
@@ -455,8 +446,12 @@ window.addEventListener('DOMContentLoaded', () => {
 				form.appendChild(statusMessage);
 				statusMessage.textContent = laodMessage;
 
-				postData(body)
-					.then(() => {
+				postData(formData)
+					.then(response => {
+						if (response.status !== 200) {
+							throw new Error('status network not 200');
+						}
+
 						statusMessage.textContent = successMessage;
 						clearForm();
 					})
