@@ -49,3 +49,4 @@ function maskPhone(selector, masked = '+7 (___) ___-__-__') {
 		elem.addEventListener("blur", mask);
 	}
 }
+
