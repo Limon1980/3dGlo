@@ -3,8 +3,15 @@ const sendForm = form => {
 		laodMessage = 'Загрузка...',
 		successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
-	const statusMessage = document.createElement('div');
-	statusMessage.style.cssText = 'font-size: 2rem; color: red;';
+	// const statusMessage = document.createElement('div');
+	// statusMessage.style.cssText = 'font-size: 2rem; color: red;';
+
+	const statusMessage = document.createElement('div'); // создаем еэлемент для оповещения хода загрузки
+	statusMessage.classList.add('preload-container');
+	statusMessage.style.cssText = `
+			font-size: 1.6rem;
+			color: #fff;
+		`;
 
 	form.addEventListener('submit', e => {
 		e.preventDefault();
@@ -48,7 +55,26 @@ const sendForm = form => {
 
 		if (valid) {
 			form.appendChild(statusMessage);
-			statusMessage.textContent = laodMessage;
+			// statusMessage.textContent = laodMessage;
+
+			statusMessage.innerHTML = `
+					<div class="bubbles">
+						<div class="bubble">
+							<div class="circle"></div>
+						</div>
+						<div class="bubble">
+							<div class="circle"></div>
+						</div><div class="bubble">
+							<div class="circle"></div>
+						</div><div class="bubble">
+							<div class="circle"></div>
+						</div><div class="bubble">
+							<div class="circle"></div>
+						</div><div class="bubble">
+							<div class="circle"></div>
+						</div>
+					</div>
+				`;
 
 			postData(formData)
 				.then(response => {

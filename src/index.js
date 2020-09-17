@@ -11,6 +11,7 @@ import countTimer from './modules/countTimer';
 import toggleMenu from './modules/toggleMenu';
 import togglePopUp from './modules/togglePopUp';
 import tabs from './modules/tabs';
+import scroll from './modules/scroll';
 import slider from './modules/slider';
 import team from './modules/team';
 import calcValidate from './modules/calcValidate';
@@ -31,6 +32,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	//Табы
 	tabs();
+
+	// скролл до элемента
+	scroll();
 
 	// слайдер
 	slider();

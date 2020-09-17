@@ -2,9 +2,8 @@ const toggleMenu = () => {
 	const btnMenu = document.querySelector('.menu'),
 		menu = document.querySelector('menu'),
 		body = document.querySelector('body'),
-		closeBtn = document.querySelector('.close-btn'),
-		menuItems = menu.querySelectorAll('ul>li');
-
+		closeBtn = document.querySelector('.close-btn');
+	// menuItems = menu.querySelectorAll('ul>li');
 
 	const handlerMenu = () => {
 		menu.classList.toggle('active-menu');
@@ -18,17 +17,19 @@ const toggleMenu = () => {
 			event.preventDefault();
 			handlerMenu();
 		} else {
-			menuItems.forEach(elem => {
-				if (elem.firstChild === target) {
-					handlerMenu();
-				}
-				const findActiveMenu = elem => elem.classList.contains('active-menu');
-				const arr = Array.from(body.children);
-				if (arr.find(findActiveMenu) && !(target.closest('menu'))) {
-					handlerMenu();
-				}
+			// скрытие меню после перехода по ссылке
+			// menuItems.forEach(elem => {
+			// if (elem.firstChild === target) {
+			// 	handlerMenu();
+			// }
+			// });
+			const findActiveMenu = elem => elem.classList.contains('active-menu');
+			const arr = Array.from(body.children);
+			if (arr.find(findActiveMenu) && !(target.closest('menu'))) {
+				handlerMenu();
+			}
 
-			});
+
 		}
 
 	});
