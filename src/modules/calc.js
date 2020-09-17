@@ -48,7 +48,7 @@ const calc = (price = 100) => {
 					totalValue.innerText = counter;
 					requestAnimationFrame(count);
 				}
-				counter += total / 10;
+				counter += Math.floor(total / 10);
 				return counter;
 			};
 		}
