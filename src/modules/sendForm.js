@@ -58,6 +58,9 @@ const sendForm = form => {
 
 					statusMessage.textContent = successMessage;
 					clearForm();
+					setTimeout(() => {
+						statusMessage.textContent = ''
+					}, 3000);
 				})
 				.catch(error => {
 					statusMessage.textContent = erorMessage;

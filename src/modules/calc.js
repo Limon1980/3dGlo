@@ -44,11 +44,11 @@ const calc = (price = 100) => {
 			return function count() {
 				if (counter >= total) {
 					totalValue.innerText = total;
-				} else if (counter % 100 === 0) {
+				} else {
 					totalValue.innerText = counter;
-					setTimeout(count, 10);
+					requestAnimationFrame(count);
 				}
-				counter += 100;
+				counter += total / 10;
 				return counter;
 			};
 		}
@@ -57,7 +57,7 @@ const calc = (price = 100) => {
 
 		if (total > 0) {
 			cicle();
-			console.log(total);
+			// console.log(total);
 		} else {
 			totalValue.textContent = 0;
 		}
