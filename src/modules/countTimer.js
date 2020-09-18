@@ -18,26 +18,34 @@ function countTimer(deadline) {
 		};
 	}
 
+
+
 	const checkAndCreateTwoDigit = num =>
-		(String(num).length === 1 ? '0' + num : num) // если число из 1 символа конкатинируем в начале 0
-		;
+		(String(num).length === 1 ? '0' + num : num); // если число из 1 символа конкатинируем в начале 0
 
-	function updateClock() {
-		const idInterval = setInterval(() => {
-			const timer = getTimeRemaining();
-
+	const timerUpdate = () => {
+		const timer = getTimeRemaining();
+		if (timer.timeRemaining > 0) {
 			timerHours.textContent = checkAndCreateTwoDigit(timer.hours);
 			timerMinutes.textContent = checkAndCreateTwoDigit(timer.minutes);
 			timerSeconds.textContent = checkAndCreateTwoDigit(timer.seconds);
-			if (timer.timeRemaining <= 0) {
+		} else {
+			timerHours.textContent = '00';
+			timerMinutes.textContent = '00';
+			timerSeconds.textContent = '00';
+		}
+		return timer;
+	};
+
+	function updateClock() {
+		const idInterval = setInterval(() => {
+			if (timerUpdate().timeRemaining <= 0) {
 				clearInterval(idInterval);
-				timerHours.textContent = '00';
-				timerMinutes.textContent = '00';
-				timerSeconds.textContent = '00';
 			}
 		}, 1000);
 	}
 
+	timerUpdate();
 	updateClock();
 }
 

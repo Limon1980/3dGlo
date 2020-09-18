@@ -21,7 +21,7 @@ import validForm from './modules/validForm';
 window.addEventListener('DOMContentLoaded', () => {
 
 	// Таймер
-	countTimer('23 september 2020 22:00:00');
+	countTimer('19 september 2020 22:26:00');
 
 	// Меню
 	toggleMenu();

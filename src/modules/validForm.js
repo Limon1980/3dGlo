@@ -57,10 +57,11 @@ const validForm = selector => {
 	maskPhone(`${selector}-phone`);
 
 	form.addEventListener('input', e => {
-		if (e.target.id === `${selector.slice(1)}-name` || e.target.id === 'form2-message') {
-			if (!(/^[А-Яа-яёЁ\s]*$/g.test(e.target.value))) {
-				e.target.value = e.target.value.slice(0, -1);
-			}
+		if (e.target.id === `${selector.slice(1)}-name`) {
+			e.target.value = e.target.value.replace(/[^а-яА-Я\s]/g, '');
+		}
+		if (e.target.id === 'form2-message') {
+			e.target.value = e.target.value.replace(/[^\W\s0-9]/g, '');
 		}
 	});
 };
